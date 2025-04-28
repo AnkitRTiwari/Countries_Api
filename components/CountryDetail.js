@@ -69,7 +69,6 @@ const CountryDetail = () => {
     "Loading.........."
   ) : (
     <main className={isDark ? "dark" : ""}>
-      <h1>{`${dim.width} * ${dim.height}`}</h1>
       <div className="country-details-container">
         <span className="back-button" onClick={() => history.back()}>
           <i className="fa-solid fa-arrow-left"></i>&nbsp; Back

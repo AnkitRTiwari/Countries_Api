@@ -6,7 +6,7 @@ const CountriesList = ({ entry }) => {
   const [countriesdata, setCountriesdata] = useState([]);
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
+    fetch("https://restcountries.com/v3.1/independent?status=true")
       .then((data) => data.json())
       .then((data) => {
         setCountriesdata(data);

@@ -6,9 +6,6 @@ import { useContext, useState } from "react";
 import { ThemeContext, ThemeProvider } from "./contexts/Theme";
 
 const App = () => {
-  // const a = useContext(ThemeContext);
-  // console.log(a);
-
   return (
     <ThemeProvider>
       <Header />

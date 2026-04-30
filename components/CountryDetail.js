@@ -31,6 +31,7 @@ const CountryDetail = () => {
         .map((currency) => currency.name)
         .join(", "),
       coatOfArms: data.coatOfArms.svg,
+      latlng: data.latlng,
       borders: [],
     });
 
@@ -84,60 +85,84 @@ const CountryDetail = () => {
         {countryData === null ? (
           <CountryDetailShimmer />
         ) : (
-          <div className="country-details">
-            <img src={countryData.flag} alt={`${countryData.name} flag`} />
-            <div className="details-text-container">
-              <h1>{countryData.name}</h1>
-              <div className="details-text">
-                <p>
-                  <b>
-                    Native Name: {countryData.nativeName || countryData.name}
-                  </b>
-                  <span className="native-name"></span>
-                </p>
-                <p>
-                  <b>
-                    Population: {countryData.population.toLocaleString("en-IN")}
-                  </b>
-                  <span className="population"></span>
-                </p>
-                <p>
-                  <b>Region: {countryData.region}</b>
-                  <span className="region"></span>
-                </p>
-                <p>
-                  <b>Sub Region: {countryData.subregion}</b>
-                  <span className="sub-region"></span>
-                </p>
-                <p>
-                  <b>Capital: {countryData.capital?.join(", ")}</b>
-                  <span className="capital"></span>
-                </p>
-                <p>
-                  <b>Top Level Domain: {countryData.tld}</b>
-                  <span className="top-level-domain"></span>
-                </p>
-                <p>
-                  <b>Currencies: {countryData.currencies}</b>
-                  <span className="currencies"></span>
-                </p>
-                <p>
-                  <b>Languages: {countryData.languages}</b>
-                  <span className="languages"></span>
-                </p>
-              </div>
-              {countryData.borders.length !== 0 && (
-                <div className="border-countries">
-                  <b>Border Countries: </b>&nbsp;
-                  {countryData.borders.map((border) => (
-                    <Link key={border} to={`/${border}`}>
-                      {border}
-                    </Link>
-                  ))}
+          <>
+            <div className="country-details">
+              <img src={countryData.flag} alt={`${countryData.name} flag`} />
+              <div className="details-text-container">
+                <h1>{countryData.name}</h1>
+                <div className="details-text">
+                  <p>
+                    <b>
+                      Native Name: {countryData.nativeName || countryData.name}
+                    </b>
+                    <span className="native-name"></span>
+                  </p>
+                  <p>
+                    <b>
+                      Population: {countryData.population.toLocaleString("en-IN")}
+                    </b>
+                    <span className="population"></span>
+                  </p>
+                  <p>
+                    <b>Region: {countryData.region}</b>
+                    <span className="region"></span>
+                  </p>
+                  <p>
+                    <b>Sub Region: {countryData.subregion}</b>
+                    <span className="sub-region"></span>
+                  </p>
+                  <p>
+                    <b>Capital: {countryData.capital?.join(", ")}</b>
+                    <span className="capital"></span>
+                  </p>
+                  <p>
+                    <b>Top Level Domain: {countryData.tld}</b>
+                    <span className="top-level-domain"></span>
+                  </p>
+                  <p>
+                    <b>Currencies: {countryData.currencies}</b>
+                    <span className="currencies"></span>
+                  </p>
+                  <p>
+                    <b>Languages: {countryData.languages}</b>
+                    <span className="languages"></span>
+                  </p>
                 </div>
-              )}
+                {countryData.borders.length !== 0 && (
+                  <div className="border-countries">
+                    <b>Border Countries: </b>&nbsp;
+                    {countryData.borders.map((border) => (
+                      <Link key={border} to={`/${border}`}>
+                        {border}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+
+            {countryData.latlng?.length === 2 && (
+              <div className="map-card">
+                <h2 className="map-card-title">
+                  <i className="fa-solid fa-location-dot"></i>&nbsp; Location on Map
+                </h2>
+                <iframe
+                  title={`${countryData.name} location`}
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${countryData.latlng[1] - 10},${countryData.latlng[0] - 10},${countryData.latlng[1] + 10},${countryData.latlng[0] + 10}&layer=mapnik&marker=${countryData.latlng[0]},${countryData.latlng[1]}`}
+                  className="map-iframe"
+                  loading="lazy"
+                />
+                <a
+                  className="map-open-link"
+                  href={`https://www.openstreetmap.org/?mlat=${countryData.latlng[0]}&mlon=${countryData.latlng[1]}#map=5/${countryData.latlng[0]}/${countryData.latlng[1]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fa-solid fa-arrow-up-right-from-square"></i>&nbsp; Open in OpenStreetMap
+                </a>
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>

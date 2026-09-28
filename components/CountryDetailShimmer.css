@@ -1,34 +1,59 @@
-.shimmer .flag {
-  width: 40%;
-  height: 240px;
-  background-color: var(--elements-color);
-  border-radius: 4px;
+.detail-shimmer .sk-badge {
+  width: 96px;
+  height: 26px;
+  border-radius: 999px;
 }
 
-.shimmer .title {
-  height: 36px;
-  background-color: var(--elements-color);
-  border-radius: 4px;
+.detail-shimmer .sk-badge.short {
+  width: 72px;
 }
 
-.country-details.shimmer p {
-  height: 22px;
-  background-color: var(--elements-color);
-  border-radius: 2px;
+.detail-shimmer .sk-title {
+  width: 70%;
+  height: 44px;
+  border-radius: 12px;
 }
 
-.country-details.shimmer p:last-child {
-  width: 50%;
+.detail-shimmer .sk-subtitle {
+  width: 45%;
+  height: 18px;
+  margin-top: 12px;
+  border-radius: 8px;
 }
 
-.details-text-container {
-  flex-grow: 1;
+.detail-shimmer .sk-tile {
+  height: 76px;
+  border-radius: var(--radius-md);
 }
 
-@media (max-width: 940px) {
-  .shimmer .flag,
-  .details-text-container {
-    width: 100%;
-    max-width: 400px;
-  }
+.detail-shimmer .sk-panel-title {
+  width: 160px;
+  height: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.detail-shimmer .map-card-header .sk-panel-title {
+  margin-bottom: 0;
+}
+
+.detail-shimmer .sk-dt {
+  width: 45%;
+  height: 11px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+}
+
+.detail-shimmer .sk-dd {
+  width: 75%;
+  height: 15px;
+  border-radius: 6px;
+}
+
+/* Shared with the live border list while neighbours resolve */
+.sk-chip {
+  display: inline-block;
+  width: 112px;
+  height: 38px;
+  border-radius: 999px;
 }

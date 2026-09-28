@@ -1,0 +1,270 @@
+/* ==========================================================
+   Motion — entrances, scroll effects, click feedback,
+   theme switch and page transitions. The intro splash lives
+   in components/Intro.css.
+   ========================================================== */
+
+:root {
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes word-up {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+  }
+}
+
+@keyframes nudge-up {
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+/* ---------- Home entrance (first visit only, see Home.js) ---------- */
+.hero-title .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for descenders (y, g) inside the clipping box */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.hero-title .word > span {
+  display: inline-block;
+}
+
+.home.is-entering .hero-eyebrow {
+  animation: fade-up 0.7s var(--ease-out) 0.05s backwards;
+}
+
+.home.is-entering .hero-title .word > span {
+  animation: word-up 0.9s var(--ease-out) backwards;
+  animation-delay: calc(0.15s + var(--w) * 70ms);
+}
+
+.home.is-entering .hero-subtitle {
+  animation: fade-up 0.7s var(--ease-out) 0.6s backwards;
+}
+
+.home.is-entering .toolbar {
+  animation: fade-up 0.7s var(--ease-out) 0.75s backwards;
+}
+
+/* ---------- Country detail entrance ---------- */
+.detail-content .detail-badges {
+  animation: fade-up 0.6s var(--ease-out) backwards;
+}
+
+.detail-content .name-coat {
+  animation: fade-up 0.6s var(--ease-out) 0.08s backwards;
+}
+
+.detail-content .coat-of-arms {
+  animation: pop-in 0.8s var(--ease-spring) 0.3s backwards;
+}
+
+.detail-content .stat-tile {
+  animation: fade-up 0.6s var(--ease-out) backwards;
+}
+
+.detail-content .stat-tile:nth-child(1) { animation-delay: 0.16s; }
+.detail-content .stat-tile:nth-child(2) { animation-delay: 0.23s; }
+.detail-content .stat-tile:nth-child(3) { animation-delay: 0.3s; }
+.detail-content .stat-tile:nth-child(4) { animation-delay: 0.37s; }
+
+/* ---------- Scroll reveal (see utilis/useReveal.js) ---------- */
+/* Uses the individual translate/scale properties so it never fights hover transforms */
+.reveal:not(.is-visible) {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation: reveal-up 0.7s var(--ease-out) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    translate: 0 32px;
+    scale: 0.97;
+  }
+}
+
+/* Everything waits behind the intro curtain, then plays as it lifts */
+.intro-playing :is(
+    .home.is-entering .hero-eyebrow,
+    .home.is-entering .hero-title .word > span,
+    .home.is-entering .hero-subtitle,
+    .home.is-entering .toolbar,
+    .detail-content .detail-badges,
+    .detail-content .name-coat,
+    .detail-content .coat-of-arms,
+    .detail-content .stat-tile,
+    .reveal.is-visible
+  ) {
+  animation-play-state: paused;
+}
+
+/* ---------- Scroll-linked effects (browsers with scroll timelines) ---------- */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    animation: scroll-progress auto linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  /* Hero drifts up and fades as you scroll into the results */
+  .hero {
+    animation: hero-scroll auto linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0px 480px;
+  }
+}
+
+@keyframes scroll-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-scroll {
+  to {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.95);
+  }
+}
+
+/* ---------- Click feedback ---------- */
+.button,
+.chip,
+.pagination-btn,
+.theme-changer,
+.back-button,
+.border-chip,
+.map-open-link,
+.map-control,
+.search-clear {
+  position: relative;
+  overflow: hidden;
+  /* overflow: hidden would otherwise let flex rows squash them (e.g. the mobile chip scroller) */
+  flex-shrink: 0;
+}
+
+/* Added on pointerdown by utilis/useRipple.js */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.28;
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple 0.6s ease-out forwards;
+}
+
+@keyframes ripple {
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.button:active,
+.chip:active,
+.pagination-btn:active:not(:disabled),
+.theme-changer:active,
+.back-button:active,
+.border-chip:active,
+.map-control:active,
+.back-to-top:active {
+  scale: 0.94;
+}
+
+.country-card:active {
+  scale: 0.98;
+}
+
+/* Theme icon spins in when it swaps (the <i> is keyed in Header.js) */
+.theme-icon {
+  animation: icon-swap 0.5s var(--ease-spring);
+}
+
+@keyframes icon-swap {
+  from {
+    opacity: 0;
+    transform: rotate(-140deg) scale(0.3);
+  }
+}
+
+/* ---------- Theme switch: circular reveal (utilis/themeTransition.js) ---------- */
+html.theme-transition::view-transition-old(root),
+html.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Capture the whole page as one layer and skip colour fades mid-reveal */
+html.theme-transition * {
+  view-transition-name: none !important;
+  transition: none !important;
+}
+
+/* ---------- Page transitions: card flag morphs into the detail flag ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-group(country-flag) {
+  animation-duration: 0.55s;
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-old(country-flag),
+::view-transition-new(country-flag) {
+  animation-duration: 0.55s;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
+  .hero {
+    animation: none !important;
+  }
+
+  /* The progress bar tracks scroll position rather than playing over time */
+  .scroll-progress {
+    animation-duration: auto !important;
+  }
+}

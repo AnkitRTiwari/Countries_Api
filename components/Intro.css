@@ -1,0 +1,136 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  background-color: var(--bg);
+  clip-path: inset(0 0 0 0);
+  cursor: pointer;
+}
+
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(560px 380px at 50% 46%, var(--primary-soft), transparent 70%);
+}
+
+/* Curtain wipes up to reveal the page */
+.intro.is-leaving {
+  animation: intro-leave var(--leave-duration) cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+.intro.is-leaving .intro-content {
+  animation: intro-content-leave calc(var(--leave-duration) * 0.7) ease-in forwards;
+}
+
+.intro-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.intro-logo {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 26px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 40px;
+  box-shadow: 0 24px 50px -12px rgba(99, 102, 241, 0.65);
+  animation: intro-logo-pop 0.8s var(--ease-spring) backwards;
+}
+
+.intro-logo i {
+  animation: intro-globe-spin 1.3s cubic-bezier(0.6, 0, 0.2, 1) backwards;
+}
+
+.intro-name {
+  display: flex;
+  margin: 10px 0 0;
+  font-size: clamp(40px, 8vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.intro-name span {
+  display: inline-block;
+  animation: intro-letter 0.6s var(--ease-out) backwards;
+  animation-delay: calc(200ms + var(--i) * 40ms);
+}
+
+.intro-tagline {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 17px;
+  font-weight: 500;
+  animation: fade-up 0.6s var(--ease-out) 0.55s backwards;
+}
+
+.intro-bar {
+  position: relative;
+  width: 160px;
+  height: 4px;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: var(--surface-2);
+}
+
+.intro-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--gradient);
+  transform-origin: left;
+  animation: intro-bar-fill 1s cubic-bezier(0.6, 0, 0.2, 1) 0.2s backwards;
+}
+
+@keyframes intro-leave {
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes intro-content-leave {
+  to {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.96);
+  }
+}
+
+@keyframes intro-logo-pop {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(-30deg);
+  }
+}
+
+@keyframes intro-globe-spin {
+  from {
+    transform: rotate(-220deg) scale(0.6);
+  }
+}
+
+@keyframes intro-letter {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em) rotate(8deg);
+    filter: blur(6px);
+  }
+}
+
+@keyframes intro-bar-fill {
+  from {
+    transform: scaleX(0);
+  }
+}

@@ -1,32 +1,48 @@
-main .shimmer-card {
-  --shimmer-color: hsl(0, 0%, 78%);
+/* Placeholders show immediately — they aren't scroll-revealed like real cards */
+.country-card.shimmer-card {
+  pointer-events: none;
 }
 
-main.dark .shimmer-card {
-  --shimmer-color: hsl(208, 21%, 34%);
+.sk-meta {
+  width: 220px;
+  height: 16px;
+  margin-bottom: 20px;
+  border-radius: 8px;
 }
 
-.shimmer-card {
-  height: 338px;
-  background-color: var(--elements-color);
-}
-
-.shimmer-card .flag-container {
-  background-color: var(--shimmer-color);
-}
-
-.shimmer-card .card-title {
-  height: 32px;
-  background-color: var(--shimmer-color);
-  border-radius: 4px;
-}
-
-.shimmer-card p {
+.shimmer-card .sk-title {
+  width: 65%;
   height: 22px;
-  border-radius: 4px;
-  background-color: var(--shimmer-color);
+  margin-bottom: 18px;
+  border-radius: 8px;
 }
 
-.shimmer-card p:last-child {
-  width: 60%;
+.shimmer-card .sk-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.shimmer-card .sk-label {
+  width: 38%;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.shimmer-card .sk-value {
+  width: 34%;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.shimmer-card .sk-value.short {
+  width: 24%;
+}
+
+.shimmer-card .sk-cta {
+  width: 40%;
+  height: 12px;
+  margin-top: 18px;
+  border-radius: 6px;
 }

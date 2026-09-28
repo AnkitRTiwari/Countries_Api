@@ -1,16 +1,17 @@
-const SelectMenu = ({ setEntry }) => {
+const SelectMenu = ({ label, icon, value, options, onChange }) => {
   return (
-    <select
-      className="filter-by-region"
-      onChange={(e) => setEntry(e.target.value.toLowerCase())}
-    >
-      <option hidden>Filter by Region</option>
-      <option value="Africa">Africa</option>
-      <option value="America">America</option>
-      <option value="Asia">Asia</option>
-      <option value="Europe">Europe</option>
-      <option value="Oceania">Oceania</option>
-    </select>
+    <label className="select-menu">
+      <i className={`fa-solid fa-${icon}`} />
+      <span className="visually-hidden">{label}</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <i className="fa-solid fa-chevron-down select-menu-caret" />
+    </label>
   );
 };
 

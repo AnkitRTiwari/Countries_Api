@@ -3,8 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Countries API</title>
-    <!-- Font Family -->
+    <title>Wanderlust — Where do you want to go?</title>
+    <meta
+      name="description"
+      content="Wanderlust — explore every country on Earth: flags, populations, languages, neighbours and maps."
+    />
+    <meta name="theme-color" content="#4f46e5" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
@@ -12,11 +18,26 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <!-- Icons -->
+    <!-- Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css?family=Nunito:300,regular,500,600,700,800"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!-- Apply the saved (or OS) theme before first paint to avoid a light flash.
+         The storage key must match THEME_STORAGE_KEY in contexts/Theme.js -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("wanderlust-theme");
+          var isDark = saved
+            ? saved === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.dataset.theme = isDark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
     <script src="index.js" type="module"></script>
   </head>
   <body>

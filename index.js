@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter } from "react-router";
+// The DOM RouterProvider enables view transitions (flag morph between pages)
+import { RouterProvider } from "react-router/dom";
 import Contact from "./components/Contact";
 import Home from "./components/Home";
 import Error from "./components/Error";

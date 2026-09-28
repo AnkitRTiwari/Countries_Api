@@ -1,0 +1,350 @@
+.map-card {
+  margin-top: 24px;
+  overflow: hidden;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.map-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  padding: 18px 24px;
+}
+
+.map-card-header .panel-title {
+  margin: 0;
+}
+
+.map-card-subtitle {
+  margin: 4px 0 0 28px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.map-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.map-open-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background-color: var(--primary-soft);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 0.2s ease;
+}
+
+.map-open-link:hover {
+  background-color: color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+/* ---------- Map stage ---------- */
+.map-frame {
+  --map-space: radial-gradient(circle at 50% 45%, #f3f5ff 0%, #e2e8fb 55%, #d3dbf4 100%);
+  position: relative;
+  height: 480px;
+  isolation: isolate;
+}
+
+/* Deep space with a scatter of stars around the globe */
+:root[data-theme="dark"] .map-frame {
+  --map-space:
+    radial-gradient(1px 1px at 8% 16%, rgba(255, 255, 255, 0.8), transparent 70%),
+    radial-gradient(1px 1px at 22% 74%, rgba(255, 255, 255, 0.55), transparent 70%),
+    radial-gradient(1.5px 1.5px at 35% 30%, rgba(255, 255, 255, 0.7), transparent 70%),
+    radial-gradient(1px 1px at 47% 88%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(1px 1px at 63% 12%, rgba(255, 255, 255, 0.75), transparent 70%),
+    radial-gradient(1.5px 1.5px at 78% 64%, rgba(255, 255, 255, 0.6), transparent 70%),
+    radial-gradient(1px 1px at 88% 28%, rgba(255, 255, 255, 0.8), transparent 70%),
+    radial-gradient(1px 1px at 94% 84%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(circle at 50% 45%, #1c2547 0%, #0c1224 55%, #05070f 100%);
+}
+
+.map-frame.is-ready {
+  background: var(--map-space);
+}
+
+/* Scoped to beat MapLibre's own `.maplibregl-map { position: relative }` */
+.map-frame .map-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.map-frame.is-ready .map-canvas {
+  opacity: 1;
+}
+
+/* Soft inner vignette for depth — above the map, below the controls */
+.map-frame.is-ready::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px rgba(15, 23, 42, 0.18);
+}
+
+:root[data-theme="dark"] .map-frame.is-ready::after {
+  box-shadow: inset 0 0 110px rgba(0, 0, 0, 0.55);
+}
+
+.map-frame:fullscreen {
+  height: 100%;
+}
+
+.map-iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ---------- Glass overlays ---------- */
+.map-legend,
+.map-controls {
+  position: absolute;
+  top: 16px;
+  z-index: 3;
+  animation: fade-up 0.6s var(--ease-out) 0.4s backwards;
+}
+
+.map-legend {
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: calc(100% - 100px);
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background-color: color-mix(in srgb, var(--surface) 78%, transparent);
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+}
+
+.map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legend-swatch {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.legend-swatch.is-country {
+  border: 2px solid var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 35%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+
+.legend-swatch.is-neighbour {
+  border: 1.5px dashed var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.legend-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--gradient);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.map-controls {
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation-delay: 0.5s;
+}
+
+.map-control {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: color-mix(in srgb, var(--surface) 80%, transparent);
+  color: var(--text);
+  font-size: 15px;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: color 0.2s ease, border-color 0.2s ease, scale 0.15s ease;
+}
+
+.map-control:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ---------- Capital marker (DOM element created in utilis/countryMap.js) ---------- */
+.map-marker {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.map-marker-dot,
+.map-marker-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.map-marker-dot {
+  border: 3px solid #fff;
+  background: var(--gradient);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 35%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.35);
+  scale: 0;
+  transition: scale 0.6s var(--ease-spring);
+}
+
+.map-marker-pulse {
+  background-color: var(--primary);
+  opacity: 0;
+}
+
+.map-marker.is-landed .map-marker-dot {
+  scale: 1;
+}
+
+.map-marker.is-landed .map-marker-pulse {
+  animation: marker-pulse 2.2s ease-out infinite;
+}
+
+@keyframes marker-pulse {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4.5);
+  }
+}
+
+.map-marker-label {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text);
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  translate: -50% 8px;
+  transition: opacity 0.4s ease 0.25s, translate 0.5s var(--ease-out) 0.25s;
+}
+
+.map-marker-label i {
+  color: #f59e0b;
+  font-size: 11px;
+}
+
+.map-marker.is-landed .map-marker-label {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+/* ---------- MapLibre UI, themed ---------- */
+/* Extra class so these beat MapLibre's own (later-loaded) compact badge styles */
+.map-frame .maplibregl-ctrl.maplibregl-ctrl-attrib {
+  border: 1px solid var(--border);
+  background-color: color-mix(in srgb, var(--surface) 82%, transparent);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.map-frame .maplibregl-ctrl-attrib a {
+  color: var(--text-muted);
+}
+
+.map-frame .maplibregl-ctrl-attrib a:hover {
+  color: var(--primary);
+}
+
+:root[data-theme="dark"] .map-frame .maplibregl-ctrl-attrib-button {
+  filter: invert(1);
+}
+
+.map-frame .maplibregl-cooperative-gesture-screen {
+  z-index: 4;
+  background-color: rgba(11, 17, 32, 0.55);
+  color: #fff;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 520px) {
+  .map-frame {
+    height: 360px;
+  }
+
+  .map-card-header {
+    padding: 16px 20px;
+  }
+
+  .map-legend {
+    top: 12px;
+    left: 12px;
+    gap: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .map-controls {
+    top: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .map-control {
+    width: 36px;
+    height: 36px;
+  }
+}

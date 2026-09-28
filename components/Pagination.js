@@ -27,13 +27,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   if (totalPages <= 1) return null;
 
   return (
-    <div className="pagination">
+    <nav className="pagination" aria-label="Pagination">
       <button
-        className="pagination-btn"
+        className="pagination-btn pagination-nav"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        aria-label="Previous page"
       >
-        &laquo; Prev
+        <i className="fa-solid fa-chevron-left" />
+        <span>Prev</span>
       </button>
 
       {getPageNumbers().map((page, index) =>
@@ -45,6 +47,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={page}
             className={`pagination-btn ${page === currentPage ? "active" : ""}`}
+            aria-current={page === currentPage ? "page" : undefined}
             onClick={() => onPageChange(page)}
           >
             {page}
@@ -53,13 +56,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       )}
 
       <button
-        className="pagination-btn"
+        className="pagination-btn pagination-nav"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        aria-label="Next page"
       >
-        Next &raquo;
+        <span>Next</span>
+        <i className="fa-solid fa-chevron-right" />
       </button>
-    </div>
+    </nav>
   );
 };
 

@@ -20,21 +20,25 @@ export const SORT_OPTIONS = [
   {
     value: "name",
     label: "Name (A–Z)",
+    icon: "arrow-down-a-z",
     compare: (a, b) => a.name.common.localeCompare(b.name.common),
   },
   {
     value: "population-desc",
     label: "Population (high → low)",
+    icon: "arrow-down-wide-short",
     compare: (a, b) => b.population - a.population,
   },
   {
     value: "population-asc",
     label: "Population (low → high)",
+    icon: "arrow-up-short-wide",
     compare: (a, b) => a.population - b.population,
   },
   {
     value: "area-desc",
     label: "Area (largest first)",
+    icon: "maximize",
     compare: (a, b) => b.area - a.area,
   },
 ];

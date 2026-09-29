@@ -299,7 +299,10 @@ main {
   margin: 0 auto 32px;
 }
 
+/* Stacks above the region chips so the open sort list covers them */
 .toolbar-row {
+  position: relative;
+  z-index: 2;
   display: flex;
   gap: 12px;
 }
@@ -959,6 +962,10 @@ main {
 
   .select-menu {
     min-width: 0;
+  }
+
+  .select-menu-option {
+    padding-block: 13px;
   }
 
   /* Chips scroll sideways instead of wrapping onto many rows */
